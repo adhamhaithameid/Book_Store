@@ -208,10 +208,18 @@ def search_inventory(inventory):
 # Main function to drive the program
 def main():
     inventory = Inventory()
+    sales_manager = SalesManager()
+
     while True:
-        print("\nOptions: \n1. Add Item \n2. Search Items \n3. Show Inventory \n4. Exit")
+        print("\nOptions:")
+        print("1. Add Item")
+        print("2. Search Items")
+        print("3. Show Inventory")
+        print("4. Place an Order")
+        print("5. Show Sales Report")
+        print("6. Exit")
         choice = input("Choose an option: ")
-        
+
         if choice == '1':
             add_item_to_inventory(inventory)
         elif choice == '2':
@@ -220,10 +228,39 @@ def main():
             print("Current Inventory:")
             inventory.list_inventory()
         elif choice == '4':
+            order = create_order(inventory)
+            if order:
+                sales_manager.add_order(order)
+                print("Order completed and added to sales.")
+        elif choice == '5':
+            print(sales_manager.get_sales_report())
+        elif choice == '6':
             print("Exiting.")
             break
         else:
             print("Invalid option. Please try again.")
+
+def create_order(inventory):
+    order = Order()
+    print("Creating a new order. Please add items.")
+    while True:
+        item_title = input("Enter item title to add (or type 'done' to finish): ")
+        if item_title.lower() == 'done':
+            break
+        quantity = int(input(f"Enter quantity for {item_title}: "))
+        # Search for the item by title
+        found_items = inventory.search_item(item_title)
+        if found_items:
+            order.add_item(found_items[0], quantity)  # Assumes the first found item is the desired one
+        else:
+            print("Item not found.")
+    if order.items:
+        print(order)
+        order.complete_order()
+        return order
+    else:
+        print("No items added to order.")
+        return None
 
 if __name__ == "__main__":
     main()
