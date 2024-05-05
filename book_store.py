@@ -194,6 +194,40 @@ def add_item_to_inventory(inventory):
     inventory.add_item(item)
     print("Item added successfully!")
 
+# Function to create an order in the inventory
+def create_order(inventory):
+    order = Order()
+    print("\n=================================================================")
+    print("Create a New Order")
+    print("=================================================================")
+    while True:
+        item_title = input("Enter item title to add to the order (or type 'done' to complete the order): ").strip()
+        if item_title.lower() == 'done':
+            if not order.items:
+                print("No items were added to the order. Cancelling order.")
+                return None
+            break
+        # Search for items by title
+        found_items = inventory.search_item(item_title)
+        if not found_items:
+            print("Item not found in inventory. Please try another title.")
+            continue
+        # Assume the first found item is the one to add
+        item_to_add = found_items[0]
+        quantity = safe_input("quantity for this item", int)
+        order.add_item(item_to_add, quantity)
+        print(f"Added {quantity} of {item_to_add.title} to the order.")
+
+    # If we have items, close the order
+    if order.items:
+        print("\nFinalizing Order...")
+        print(order)
+        order.complete_order()
+        return order
+    else:
+        print("No items added to the order.")
+        return None
+
 # Function to search for items in the inventory
 def search_inventory(inventory):
     query = input("Enter search query (title or author): ")
