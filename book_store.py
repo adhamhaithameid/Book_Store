@@ -211,56 +211,80 @@ def main():
     sales_manager = SalesManager()
 
     while True:
-        print("\nOptions:")
-        print("1. Add Item")
-        print("2. Search Items")
-        print("3. Show Inventory")
+        print("\n=================================================================")
+        print("Welcome to the Online Bookstore Management System!")
+        print("=================================================================")
+        print("1. Add Item to Inventory")
+        print("2. Search for Items")
+        print("3. Display Inventory")
         print("4. Place an Order")
-        print("5. Show Sales Report")
+        print("5. View Sales Report")
         print("6. Exit")
-        choice = input("Choose an option: ")
+        print("=================================================================")
+        choice = input("Please choose an option (1-6): ")
 
         if choice == '1':
             add_item_to_inventory(inventory)
         elif choice == '2':
             search_inventory(inventory)
         elif choice == '3':
-            print("Current Inventory:")
+            print("\nCurrent Inventory:")
             inventory.list_inventory()
         elif choice == '4':
             order = create_order(inventory)
             if order:
                 sales_manager.add_order(order)
-                print("Order completed and added to sales.")
+                print("\nOrder completed and added to sales.")
         elif choice == '5':
+            print("\nSales Report:")
             print(sales_manager.get_sales_report())
         elif choice == '6':
-            print("Exiting.")
+            print("\nThank you for using our system. Goodbye!")
             break
         else:
-            print("Invalid option. Please try again.")
+            print("\nInvalid option. Please enter a number between 1 and 6.")
 
-def create_order(inventory):
-    order = Order()
-    print("Creating a new order. Please add items.")
+def add_item_to_inventory(inventory):
+    print("\n=================================================================")
+    print("Add a New Item to Inventory")
+    print("=================================================================")
+    item_type = input("Enter item type (book/magazine/dvd): ").strip().lower()
+    if item_type not in ['book', 'magazine', 'dvd']:
+        print("Invalid item type entered. Please choose from 'book', 'magazine', or 'dvd'.")
+        return
+    title = input("Enter title: ").strip()
+    author = input("Enter author: ").strip()
+    try:
+        price = float(input("Enter price (numeric value): "))
+    except ValueError:
+        print("Invalid price entered. Please enter a valid numeric value.")
+        return
+    
+    if item_type == 'book':
+        ISBN = input("Enter ISBN: ").strip()
+        genre = input("Enter genre: ").strip()
+        number_of_pages = safe_input("number of pages", int)
+        item = Book(title, author, price, ISBN, genre, number_of_pages)
+    elif item_type == 'magazine':
+        issue_number = safe_input("issue number", int)
+        publication_date = input("Enter publication date (e.g., 2024-05-01): ").strip()
+        editor = input("Enter editor: ").strip()
+        item = Magazine(title, author, price, issue_number, publication_date, editor)
+    elif item_type == 'dvd':
+        director = input("Enter director: ").strip()
+        duration = safe_input("duration (in minutes)", int)
+        genre = input("Enter genre: ").strip()
+        item = DVD(title, author, price, director, duration, genre)
+
+    inventory.add_item(item)
+    print("Item successfully added to inventory.")
+
+def safe_input(prompt, type_func):
     while True:
-        item_title = input("Enter item title to add (or type 'done' to finish): ")
-        if item_title.lower() == 'done':
-            break
-        quantity = int(input(f"Enter quantity for {item_title}: "))
-        # Search for the item by title
-        found_items = inventory.search_item(item_title)
-        if found_items:
-            order.add_item(found_items[0], quantity)  # Assumes the first found item is the desired one
-        else:
-            print("Item not found.")
-    if order.items:
-        print(order)
-        order.complete_order()
-        return order
-    else:
-        print("No items added to order.")
-        return None
+        try:
+            return type_func(input(f"Enter {prompt}: "))
+        except ValueError:
+            print(f"Invalid input. Please enter a valid {type(prompt).__name__}.")
 
 if __name__ == "__main__":
     main()
