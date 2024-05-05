@@ -38,3 +38,24 @@ class Book(Item):
 
 
 
+class Magazine(Item):
+    def __init__(self, title, author, price, issue_number, publication_date, editor):
+        super().__init__(title, author, price)
+        self._issue_number = issue_number
+        self._publication_date = publication_date
+        self._editor = editor
+
+    def update_details(self, issue_number=None, publication_date=None, editor=None, **kwargs):
+        super().update_details(**kwargs)
+        if issue_number is not None:
+            self._issue_number = issue_number
+        if publication_date is not None:
+            self._publication_date = publication_date
+        if editor is not None:
+            self._editor = editor
+
+    def __str__(self):
+        return f"{super().__str__()}, Issue {self._issue_number}, {self._publication_date}, Editor: {self._editor}"
+
+
+
