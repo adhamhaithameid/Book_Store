@@ -17,3 +17,24 @@ class Item:
 
 
 
+class Book(Item):
+    def __init__(self, title, author, price, ISBN, genre, number_of_pages):
+        super().__init__(title, author, price)
+        self._ISBN = ISBN
+        self._genre = genre
+        self._number_of_pages = number_of_pages
+
+    def update_details(self, ISBN=None, genre=None, number_of_pages=None, **kwargs):
+        super().update_details(**kwargs)
+        if ISBN is not None:
+            self._ISBN = ISBN
+        if genre is not None:
+            self._genre = genre
+        if number_of_pages is not None:
+            self._number_of_pages = number_of_pages
+
+    def __str__(self):
+        return f"{super().__str__()}, ISBN: {self._ISBN}, {self._genre}, {self._number_of_pages} pages"
+
+
+
