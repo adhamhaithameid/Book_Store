@@ -103,6 +103,26 @@ class Order:
         items_str = "\n".join([f"{item.title} (x{quantity}) - ${item.price}" for item, quantity in self.items])
         return f"Order Details:\n{items_str}\nTotal Cost: ${self.total_cost():.2f}"
 
+# Define a class to manage the sales
+class SalesManager:
+    def __init__(self):
+        self.orders = []
+        self.total_sales = 0.0
+
+    def add_order(self, order):
+        if order.status == "paid":
+            self.orders.append(order)
+            self.total_sales += order.total_cost()
+
+    def get_total_sales(self):
+        return self.total_sales
+
+    def get_sales_report(self):
+        report = f"Total Sales: ${self.get_total_sales():.2f}\n"
+        for order in self.orders:
+            report += str(order) + "\n"
+        return report
+
 # Define a class to manage the inventory of items
 class Inventory:
     def __init__(self):
