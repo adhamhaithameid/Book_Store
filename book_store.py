@@ -84,6 +84,25 @@ class DVD(Item):
     def __str__(self):
         return f"{super().__str__()}, Directed by {self.director}, {self.duration} min, Genre: {self.genre}"
 
+# Define a class to manage the orders of items
+class Order:
+    def __init__(self):
+        self.items = []
+        self.status = "open"  # Order status could be 'open', 'paid', 'shipped', etc.
+
+    def add_item(self, item, quantity):
+        self.items.append((item, quantity))
+
+    def total_cost(self):
+        return sum(item.price * quantity for item, quantity in self.items)
+
+    def complete_order(self):
+        self.status = "paid"
+
+    def __str__(self):
+        items_str = "\n".join([f"{item.title} (x{quantity}) - ${item.price}" for item, quantity in self.items])
+        return f"Order Details:\n{items_str}\nTotal Cost: ${self.total_cost():.2f}"
+
 # Define a class to manage the inventory of items
 class Inventory:
     def __init__(self):
