@@ -59,3 +59,24 @@ class Magazine(Item):
 
 
 
+class DVD(Item):
+    def __init__(self, title, author, price, director, duration, genre):
+        super().__init__(title, author, price)
+        self._director = director
+        self._duration = duration
+        self._genre = genre
+
+    def update_details(self, director=None, duration=None, genre=None, **kwargs):
+        super().update_details(**kwargs)
+        if director is not None:
+            self._director = director
+        if duration is not None:
+            self._duration = duration
+        if genre is not None:
+            self._genre = genre
+
+    def __str__(self):
+        return f"{super().__str__()}, Directed by {self._director}, {self._duration} min, {self._genre}"
+
+
+
