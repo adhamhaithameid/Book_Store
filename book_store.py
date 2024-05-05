@@ -80,3 +80,70 @@ class DVD(Item):
 
 
 
+class Inventory:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def remove_item(self, item):
+        self.items.remove(item)
+
+    def search_item(self, search_query):
+        results = []
+        for item in self.items:
+            if search_query.lower() in item._title.lower() or search_query.lower() in item._author.lower():
+                results.append(item)
+        return results
+
+    def list_inventory(self):
+        for item in self.items:
+            print(item)
+
+    def __str__(self):
+        return "\n".join(str(item) for item in self.items)
+
+
+
+def add_item_to_inventory(inventory):
+    print("Add a new item to the inventory.")
+    item_type = input("Enter item type (book/magazine/dvd): ").lower()
+    title = input("Enter title: ")
+    author = input("Enter author: ")
+    price = float(input("Enter price: "))
+    
+    if item_type == 'book':
+        ISBN = input("Enter ISBN: ")
+        genre = input("Enter genre: ")
+        number_of_pages = int(input("Enter number of pages: "))
+        item = Book(title, author, price, ISBN, genre, number_of_pages)
+    elif item_type == 'magazine':
+        issue_number = input("Enter issue number: ")
+        publication_date = input("Enter publication date: ")
+        editor = input("Enter editor: ")
+        item = Magazine(title, author, price, issue_number, publication_date, editor)
+    elif item_type == 'dvd':
+        director = input("Enter director: ")
+        duration = int(input("Enter duration (in minutes): "))
+        genre = input("Enter genre: ")
+        item = DVD(title, author, price, director, duration, genre)
+    else:
+        print("Invalid item type entered.")
+        return
+
+    inventory.add_item(item)
+    print("Item added successfully!")
+
+def search_inventory(inventory):
+    query = input("Enter search query (title or author): ")
+    results = inventory.search_item(query)
+    if results:
+        print("Search Results:")
+        for result in results:
+            print(result)
+    else:
+        print("No items found.")
+
+
+
