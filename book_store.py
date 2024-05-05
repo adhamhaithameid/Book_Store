@@ -147,3 +147,24 @@ def search_inventory(inventory):
 
 
 
+def main():
+    inventory = Inventory()
+    while True:
+        print("\nOptions: \n1. Add Item \n2. Search Items \n3. Show Inventory \n4. Exit")
+        choice = input("Choose an option: ")
+        
+        if choice == '1':
+            add_item_to_inventory(inventory)
+        elif choice == '2':
+            search_inventory(inventory)
+        elif choice == '3':
+            print("Current Inventory:")
+            inventory.list_inventory()
+        elif choice == '4':
+            print("Exiting.")
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+if __name__ == "__main__":
+    main()
