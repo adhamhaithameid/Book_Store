@@ -118,27 +118,38 @@ class Inventory:
 def add_item_to_inventory(inventory):
     print("Add a new item to the inventory.")
     item_type = input("Enter item type (book/magazine/dvd): ").lower()
-    title = input("Enter title: ")
-    author = input("Enter author: ")
-    price = float(input("Enter price: "))
-    
-    if item_type == 'book':
-        ISBN = input("Enter ISBN: ")
-        genre = input("Enter genre: ")
-        number_of_pages = int(input("Enter number of pages: "))
-        item = Book(title, author, price, ISBN, genre, number_of_pages)
-    elif item_type == 'magazine':
-        issue_number = input("Enter issue number: ")
-        publication_date = input("Enter publication date: ")
-        editor = input("Enter editor: ")
-        item = Magazine(title, author, price, issue_number, publication_date, editor)
-    elif item_type == 'dvd':
-        director = input("Enter director: ")
-        duration = int(input("Enter duration (in minutes): "))
-        genre = input("Enter genre: ")
-        item = DVD(title, author, price, director, duration, genre)
-    else:
-        print("Invalid item type entered.")
+
+    # Collect common item details with basic validation
+    try:
+        title = input("Enter title: ")
+        author = input("Enter author: ")
+        price = float(input("Enter price: "))
+    except ValueError:
+        print("Invalid input for price. Please enter a valid number.")
+        return
+
+    # Handle specific types of items
+    try:
+        if item_type == 'book':
+            ISBN = input("Enter ISBN: ")
+            genre = input("Enter genre: ")
+            number_of_pages = int(input("Enter number of pages: "))
+            item = Book(title, author, price, ISBN, genre, number_of_pages)
+        elif item_type == 'magazine':
+            issue_number = input("Enter issue number: ")
+            publication_date = input("Enter publication date: ")
+            editor = input("Enter editor: ")
+            item = Magazine(title, author, price, issue_number, publication_date, editor)
+        elif item_type == 'dvd':
+            director = input("Enter director: ")
+            duration = int(input("Enter duration (in minutes): "))
+            genre = input("Enter genre: ")
+            item = DVD(title, author, price, director, duration, genre)
+        else:
+            print("Invalid item type entered.")
+            return
+    except ValueError:
+        print("Invalid numerical input where a number was expected. Please try again.")
         return
 
     inventory.add_item(item)
