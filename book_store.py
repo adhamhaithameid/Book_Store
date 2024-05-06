@@ -201,24 +201,38 @@ def create_order(inventory):
     print("Create a New Order")
     print("=================================================================")
     while True:
-        item_title = input("Enter item title to add to the order (or type 'done' to complete the order): ").strip()
-        if item_title.lower() == 'done':
+        # Let user select the item type first
+        print("\nAvailable item types: Book, Magazine, DVD")
+        item_type = input("Enter the type of item you want to order or 'done' to finish: ").strip().lower()
+        if item_type == 'done':
             if not order.items:
                 print("No items were added to the order. Cancelling order.")
                 return None
             break
-        # Search for items by title
-        found_items = inventory.search_item(item_title)
-        if not found_items:
-            print("Item not found in inventory. Please try another title.")
-            continue
-        # Assume the first found item is the one to add
-        item_to_add = found_items[0]
-        quantity = safe_input("quantity for this item", int)
-        order.add_item(item_to_add, quantity)
-        print(f"Added {quantity} of {item_to_add.title} to the order.")
 
-    # If we have items, close the order
+        if item_type not in ['book', 'magazine', 'dvd']:
+            print("Invalid item type. Please choose from 'book', 'magazine', or 'dvd'.")
+            continue
+
+        item_title = input(f"Enter the title of the {item_type} to add to the order: ").strip()
+        # Search for items by title and type
+        found_items = [item for item in inventory.search_item(item_title) if isinstance(item, {'book': Book, 'magazine': Magazine, 'dvd': DVD}[item_type])]
+        if not found_items:
+            print("No matching items found in inventory. Please try another title or type.")
+            continue
+
+        # Display found items and let user select
+        for idx, item in enumerate(found_items, 1):
+            print(f"{idx}. {item}")
+        item_index = safe_input("number of the item you want to add", int) - 1
+        if item_index not in range(len(found_items)):
+            print("Invalid selection. Please enter a valid number from the list.")
+            continue
+
+        quantity = safe_input("quantity for this item", int)
+        order.add_item(found_items[item_index], quantity)
+        print(f"Added {quantity} of {found_items[item_index].title} ({item_type}) to the order.")
+
     if order.items:
         print("\nFinalizing Order...")
         print(order)
