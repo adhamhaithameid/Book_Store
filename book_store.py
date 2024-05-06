@@ -145,6 +145,23 @@ class Inventory:
                 results.append(item)
         return results
 
+
+# Update details of a specific item found by title
+def update_item_details(self, title):
+    item = self.get_item_by_title(title)
+    if item:
+        new_title = input(f"Enter new title or press enter to keep ({item.title}): ")
+        new_author = input(f"Enter new author or press enter to keep ({item.author}): ")
+        new_price = input(f"Enter new price or press enter to keep ({item.price}): ")
+        item.update_details(
+            title=new_title if new_title else item.title,
+            author=new_author if new_author else item.author,
+            price=float(new_price) if new_price else item.price
+        )
+        print("Item details updated successfully.")
+    else:
+        print("Item not found.")
+
     # Print all items in the inventory
     def list_inventory(self):
         for item in self.items:
