@@ -137,43 +137,39 @@ class Inventory:
     def remove_item(self, item):
         self.items.remove(item)
 
-    # Search for items in the inventory
+    # Search for items in the inventory by query 
     def search_item(self, search_query):
-        results = []
-        for item in self.items:
-            if search_query.lower() in item.title.lower() or search_query.lower() in item.author.lower():
-                results.append(item)
-        return results
+        return [item for item in self.items if search_query.lower() in item.title.lower() or search_query.lower() in item.author.lower()]
 
-# Get a specific item by title
-def get_item_by_title(self, title):
+    # Get a specific item by title 
+    def get_item_by_title(self, title):
         for item in self.items:
             if item.title.lower() == title.lower():
                 return item
         return None
 
-# Update details of a specific item found by title
-def update_item_details(self, title):
-    item = self.get_item_by_title(title)
-    if item:
-        new_title = input(f"Enter new title or press enter to keep ({item.title}): ")
-        new_author = input(f"Enter new author or press enter to keep ({item.author}): ")
-        new_price = input(f"Enter new price or press enter to keep ({item.price}): ")
-        item.update_details(
-            title=new_title if new_title else item.title,
-            author=new_author if new_author else item.author,
-            price=float(new_price) if new_price else item.price
-        )
-        print("Item details updated successfully.")
-    else:
-        print("Item not found.")
+    # Update details of a specific item found by title
+    def update_item_details(self, title):
+        item = self.get_item_by_title(title)
+        if item:
+            new_title = input(f"Enter new title or press enter to keep ({item.title}): ")
+            new_author = input(f"Enter new author or press enter to keep ({item.author}): ")
+            new_price = input(f"Enter new price or press enter to keep ({item.price}): ")
+            item.update_details(
+                title=new_title if new_title else item.title,
+                author=new_author if new_author else item.author,
+                price=float(new_price) if new_price else item.price
+            )
+            print("\nItem details updated successfully.")
+        else:
+            print("Item not found.")
 
-    # Print all items in the inventory
+    # Print all items in the inventory 
     def list_inventory(self):
         for item in self.items:
             print(item)
 
-    # Return a string representation of all items in the inventory
+    # Return a string representation of all items in the inventor   
     def __str__(self):
         return "\n".join(str(item) for item in self.items)
 
@@ -289,11 +285,12 @@ def main():
         print("1. Add Item to Inventory")
         print("2. Search for Items")
         print("3. Display Inventory")
-        print("4. Place an Order")
-        print("5. View Sales Report")
-        print("6. Exit")
+        print("4. Update Item Details")
+        print("5. Place an Order")
+        print("6. View Sales Report")
+        print("7. Exit")
         print("=================================================================")
-        choice = input("Please choose an option (1-6): ")
+        choice = input("Please choose an option (1-7): ")
 
         if choice == '1':
             add_item_to_inventory(inventory)
@@ -303,18 +300,22 @@ def main():
             print("\nCurrent Inventory:")
             inventory.list_inventory()
         elif choice == '4':
+            item_title = input("Enter the title of the item to update: ")
+            inventory.update_item_details(item_title)
+        elif choice == '5':
             order = create_order(inventory)
             if order:
                 sales_manager.add_order(order)
                 print("\nOrder completed and added to sales.")
-        elif choice == '5':
+        elif choice == '6':
             print("\nSales Report:")
             print(sales_manager.get_sales_report())
-        elif choice == '6':
+        elif choice == '7':
             print("\nThank you for using our system. Goodbye!")
             break
         else:
-            print("\nInvalid option. Please enter a number between 1 and 6.")
+            print("\nInvalid option. Please enter a number between 1 and 7.")
+
 
 def add_item_to_inventory(inventory):
     print("\n=================================================================")
