@@ -106,22 +106,23 @@ class Order:
 # Define a class to manage the sales
 class SalesManager:
     def __init__(self):
-        self.orders = []
-        self.total_sales = 0.0
+        self.orders = []  # List to hold completed orders
+        self.total_sales = 0.0  # Total sales amount
 
     def add_order(self, order):
         if order.status == "paid":
             self.orders.append(order)
-            self.total_sales += order.total_cost()
+            self.total_sales += order.total_cost()  # Ensure total sales are accumulated
 
     def get_total_sales(self):
         return self.total_sales
 
     def get_sales_report(self):
-        report = f"Total Sales: ${self.get_total_sales():.2f}\n"
+        report = f"Total Sales: ${self.get_total_sales():.2f}\n\nDetailed Orders:\n"
         for order in self.orders:
-            report += str(order) + "\n"
+            report += f"{order}\n"
         return report
+
 
 # Define a class to manage the inventory of items
 class Inventory:
