@@ -145,6 +145,12 @@ class Inventory:
                 results.append(item)
         return results
 
+# Get a specific item by title
+def get_item_by_title(self, title):
+        for item in self.items:
+            if item.title.lower() == title.lower():
+                return item
+        return None
 
 # Update details of a specific item found by title
 def update_item_details(self, title):
